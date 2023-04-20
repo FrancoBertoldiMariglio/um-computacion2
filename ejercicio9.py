@@ -19,8 +19,55 @@ def matrix():
     matriz2 = [[5, 8],
                [1, 9]]
     
-    row1 = 0
-    col2 = 1
+    rt = os.fork()
+
+    if rt == 0:
+        print("Hijo 1: " + str(getPid()))
+        pipeout = os.open(pipe, os.O_WRONLY)
+        os.write(pipeout, str(
+            {11: (matriz1[0][0]*matriz2[0][0]) + (matriz1[0][1]*matriz2[1][0])}) + "\n")
+        exit()
+
+    rt = os.fork()
+
+    if rt == 0:
+        print("Hijo 2: " + str(getPid()))
+        pipeout = os.open(pipe, os.O_WRONLY)
+        os.write(pipeout, str(
+            {12: (matriz1[0][0]*matriz2[0][1]) + (matriz1[0][1]*matriz2[1][1])}) + "\n")
+        exit()
+
+    rt = os.fork()
+
+    if rt == 0:
+        print("Hijo 3: " + str(getPid()))
+        pipeout = os.open(pipe, os.O_WRONLY)
+        os.write(pipeout, str(
+            {21: (matriz1[1][0]*matriz2[0][0]) + (matriz1[1][1]*matriz2[1][0])}) + "\n")
+        exit()
+
+    rt = os.fork()
+
+    if rt == 0:
+        print("Hijo 4: " + str(getPid()))
+        pipeout = os.open(pipe, os.O_WRONLY)
+        os.write(pipeout, str(
+            {22: (matriz1[1][0]*matriz2[0][1]) + (matriz1[1][1]*matriz2[1][1])}) + "\n")
+        exit()
+
+    if rt > 0:
+        print(getPid())
+        pipein = open(pipe, "r")
+        file = pipein.readlines()
+        list = [i.strip("\n") for i in file]
+        listDict = [ast.literal_eval(i) for i in list]
+        for i in listDict:
+            print(str(i.keys()) + ": " + str(i.values()))
+        p = sp.Popen(["rm", "/tmp/pfifo"])
+
+
+    # row1 = 0
+    # col2 = 1
 
     # for i in range(4):
         
@@ -37,52 +84,6 @@ def matrix():
     #         os.write(pipeout, bytes(data, "utf-8"))
     #         col2 = (col2 % 2) + 1
     #         exit()
-
-    rt = os.fork()
-
-    if rt == 0:
-        print(getPid())
-        pipeout = os.open(pipe, os.O_WRONLY)
-        os.write(pipeout, str(
-            {11: (matriz1[0][0]*matriz2[0][0]) + (matriz1[0][1]*matriz2[1][0])}) + "\n")
-        exit()
-
-    rt = os.fork()
-
-    if rt == 0:
-        print(getPid())
-        pipeout = os.open(pipe, os.O_WRONLY)
-        os.write(pipeout, str(
-            {12: (matriz1[0][0]*matriz2[0][1]) + (matriz1[0][1]*matriz2[1][1])}) + "\n")
-        exit()
-
-    rt = os.fork()
-
-    if rt == 0:
-        print(getPid())
-        pipeout = os.open(pipe, os.O_WRONLY)
-        os.write(pipeout, str(
-            {21: (matriz1[1][0]*matriz2[0][0]) + (matriz1[1][1]*matriz2[1][0])}) + "\n")
-        exit()
-
-    rt = os.fork()
-
-    if rt == 0:
-        print(getPid())
-        pipeout = os.open(pipe, os.O_WRONLY)
-        os.write(pipeout, str(
-            {22: (matriz1[1][0]*matriz2[0][1]) + (matriz1[1][1]*matriz2[1][1])}) + "\n")
-        exit()
-
-    if rt > 0:
-        print(getPid())
-        pipein = open(pipe, "r")
-        file = pipein.readlines()
-        list = [i.strip("\n") for i in file]
-        listDict = [ast.literal_eval(i) for i in list]
-        for i in listDict:
-            print(str(i.keys()) + ": " + str(i.values()))
-        p = sp.Popen(["rm", "/tmp/pfifo"])
 
 
 
