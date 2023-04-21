@@ -1,10 +1,7 @@
 from father import dad
 from son import son
 import os
-import time
 import argparse
-
-# if __name__ == '__main__':
 
 # pipes
 rIn, wIn = os.pipe()
@@ -19,24 +16,35 @@ except:
     print("Ingrese una direccion de archivo valida")
 
 # archivo
-f = open("/home/franco/Escritorio/um-computacion2/prueba", "r")
+f = open(args.f, "r")
 lines = f.readlines()
 
-# codigaso
-dad = dad()
-son = son()
-for line in lines:
-    print(line)
-print("----------------------------------")
-dad.sendLines(wIn, lines)
+# lista de lineas y largo de lineas
+listLines = []
+lenList = []
 
 for i in range(len(lines)):
+    listLines.append(lines[i].replace("\n", ""))
+    lenList.append(len(listLines[i]))
+
+# logica
+dad = dad()
+son = son()
+for line in listLines:
+    print(line)
+print("----------------------------------")
+dad.sendLines(wIn, listLines)
+
+for len in lenList:
     rt = os.fork()
-    if rt == 0:
-        time.sleep(3)
+    if rt > 0:
+        # time.sleep(1)
+        # print(f"Papa: {os.getpid()}")
         continue
-    elif rt > 0:
-        son.aLaburarMijo(rIn, wOut)
+    elif rt == 0:
+        # print(f"Hijo: {os.getpid()}, papa: {os.getppid()}")
+        son.invert(rIn, wOut, len)
         exit()
 
-dad.readLines(rOut)
+for len in lenList:
+    print(dad.readLines(rOut, len))
