@@ -1,5 +1,6 @@
 import os
-
+import time
+from multiprocessing import current_process
 
 class son():
 
@@ -8,6 +9,9 @@ class son():
             line = os.read(fdIn, length)
             lineReverse = line[::-1]
             os.write(fdOut, lineReverse)
+            # processName = current_process.name
+            # print(f"Nombre proceso: {processName}")
+            time.sleep(2)
         except:
             print("El pipe esta vacio, soy hijo")
 

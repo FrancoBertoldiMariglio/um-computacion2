@@ -15,7 +15,7 @@ try:
     args = parser.parse_args()
 
 # archivo
-    f = open(args.f, "r")
+    f = open("/home/franco/Escritorio/um-computacion2/prueba", "r")
 
 except argparse.ArgumentError:
     print("Ingrese una direccion de archivo")
