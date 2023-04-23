@@ -2,21 +2,30 @@ from father import dad
 from son import son
 import os
 import argparse
+import time
 
 # pipes
 rIn, wIn = os.pipe()
 rOut, wOut = os.pipe()
 
-# parser
 try:
+# parser
     parser = argparse.ArgumentParser()
     parser.add_argument("-f", help="file to read")
     args = parser.parse_args()
-except:
-    print("Ingrese una direccion de archivo valida")
 
 # archivo
-f = open(args.f, "r")
+    f = open(args.f, "r")
+
+except argparse.ArgumentError:
+    print("Ingrese una direccion de archivo")
+    exit()
+
+except FileNotFoundError:
+    print("Ingrese una direccion de archivo valida")
+    exit()
+
+    
 lines = f.readlines()
 
 # lista de lineas y largo de lineas
@@ -38,7 +47,7 @@ dad.sendLines(wIn, listLines)
 for len in lenList:
     rt = os.fork()
     if rt > 0:
-        # time.sleep(1)
+        time.sleep(0.5)
         # print(f"Papa: {os.getpid()}")
         continue
     elif rt == 0:
