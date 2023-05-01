@@ -2,7 +2,6 @@ from father import dad
 from son import son
 import os
 import argparse
-import time
 from multiprocessing import Process
 
 # pipes
@@ -10,7 +9,7 @@ rIn, wIn = os.pipe()
 rOut, wOut = os.pipe()
 
 try:
-# parser
+    # parser
     parser = argparse.ArgumentParser()
     parser.add_argument("-f", help="file to read")
     args = parser.parse_args()
@@ -26,7 +25,7 @@ except FileNotFoundError:
     print("Ingrese una direccion de archivo valida")
     exit()
 
-    
+
 lines = f.readlines()
 
 # lista de lineas, largo de lineas y procesos hijos
@@ -53,6 +52,6 @@ for len in lenList:
 
 for process in processes:
     process.join()
-    
+
 for len in lenList:
     print(dad.readLines(rOut, len))

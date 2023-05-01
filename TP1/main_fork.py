@@ -4,20 +4,23 @@ import os
 import argparse
 import time
 
+class ArgumentError(Exception):
+    pass
+
 # pipes
 rIn, wIn = os.pipe()
 rOut, wOut = os.pipe()
 
 try:
-# parser
+    # parser
     parser = argparse.ArgumentParser()
     parser.add_argument("-f", help="file to read")
     args = parser.parse_args()
 
-# archivo
-    f = open("/home/franco/Escritorio/um-computacion2/prueba", "r")
+    # archivo
+    f = open(args.f, "r")
 
-except argparse.ArgumentError:
+except ArgumentError:
     print("Ingrese una direccion de archivo")
     exit()
 
@@ -25,7 +28,6 @@ except FileNotFoundError:
     print("Ingrese una direccion de archivo valida")
     exit()
 
-    
 lines = f.readlines()
 
 # lista de lineas y largo de lineas
