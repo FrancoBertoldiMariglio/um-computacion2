@@ -16,24 +16,65 @@ import argparse
 import mmap
 import os
 import sys
+import time
+
+def h1():
+    while True:  
+        input = os.read(sys.stdin, 2024)
+        if input != "bye":
+            mem.write(input)
+            mem.seek(0)
+            os.kill(os.getppid(), signal.SIGUSR1)
+            continue
+        os.kill(os.getppid(), signal.SIGUSR2)
+  
+
+def fatherUSR1Handler(s, r):   
+    line = mem.read()
+    print(str(line))
+    os.kill(rt2, signal.SIGUSR1)
+
+def fatherUSR2Handler(s, r):   
+    pass
+
+def h2USR1Handeler(s, r):
+    line = mem.read()
+    line = line.decode()
+    f.write(line.upper())
 
 parser = parser = argparse.ArgumentParser()
 parser.add_argument("-f", help="file to read")
 args = parser.parse_args()
+f = open(args.f, "w+")
 
 mem = mmap.mmap(-1, 64)
+print(os.getpid())    
+rt1 = os.fork()
 
-
-
-def h1():
-    input = os.read(sys.stdin, 2024)
-    mem.write(input)
-    mem.seek(0)
-    signal.signals()
-
-def lee():
+if rt1 != 0:
     
+    signal.signal(signal.SIGUSR1, fatherUSR1Handler)
+    signal.signal(signal.SIGUSR2, fatherUSR2Handler)
+    
+    rt2 = os.fork()
+    if rt2 == 0:
+        signal.signal(signal.SIGUSR1, h2USR1Handeler)
+        signal.pause()
+    else:
+        try:
+            while True:
+                os.wait()
+        except ChildProcessError:
+            exit()
 
-if __name__ == '__main__':
-    while True:
-        input("lineas: ")
+if rt1 == 0:
+    while True:  
+        var = os.read(0, 2024)
+        if var.decode() != "bye":
+            mem.write(var)
+            mem.seek(0)
+            print(f'PID: {os.getppid()}')
+            os.kill(os.getppid(), signal.SIGUSR1)
+            continue
+        os.kill(os.getppid(), signal.SIGUSR2)
+        break
