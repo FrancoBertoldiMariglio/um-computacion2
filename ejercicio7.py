@@ -1,3 +1,5 @@
+"""Verificar si es posible que dos procesos hijos (o nieto) lean el PIPE del padre."""
+
 import os
 
 def family():

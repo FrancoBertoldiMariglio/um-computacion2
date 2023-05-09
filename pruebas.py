@@ -1,26 +1,6 @@
-
-from hashlib import sha256
-import json
-import random
-from multiprocessing import Process, Pipe
-import signal
 import os
 
-processes = []
-
-def f():
-    print("kaboom")
-
-for i in range(10):
-        process = Process(target=f, args=())
-        processes.append(process)
-        process.start()
-
-for process in processes:
-      print(process.pid)
-      process.join()
-
-
+print(os.cpu_count())
 
 # matriz1 = [[1, 2],
 #            [3, 4]]

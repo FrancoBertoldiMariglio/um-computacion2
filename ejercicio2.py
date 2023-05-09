@@ -1,3 +1,7 @@
+"""Escribir un programa en Python que acepte dos argumentos de línea de comando: una cadena de texto, 
+un número entero. El programa debe imprimir una repetición de la cadena de texto tantas veces como el 
+número entero."""
+
 import getopt
 import sys
 
