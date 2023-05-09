@@ -1,6 +1,16 @@
 import os
+from multiprocessing import Process, Pipe
 
-print(os.cpu_count())
+c1, c2 = Pipe()
+
+def insert(str, num, c1):
+    c1.send({"str": str, "num": num})
+
+proc = Process(target=insert, args=("hola", 3, c1))
+proc.start()
+proc.join()
+print((c2.recv()["num"]))
+
 
 # matriz1 = [[1, 2],
 #            [3, 4]]
