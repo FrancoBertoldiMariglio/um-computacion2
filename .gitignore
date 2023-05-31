@@ -1,3 +1,6 @@
 errors.log
 prueba
-pycache
+__pycache__
+prueba
+prueba.txt
+fifo
